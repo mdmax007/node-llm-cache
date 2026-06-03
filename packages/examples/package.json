@@ -12,6 +12,7 @@
     "prompt-cache:anthropic": "node --experimental-strip-types prompt-cache-anthropic.ts",
     "embedding-cache:openai": "node --experimental-strip-types embedding-cache-openai.ts",
     "semantic-cache:openai": "node --experimental-strip-types semantic-cache-openai.ts",
+    "redis-adapter": "node --experimental-strip-types redis-adapter.ts",
     "observability": "node --experimental-strip-types observability.ts"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@nodellmcache/prompt-cache": "workspace:*",
     "@nodellmcache/embedding-cache": "workspace:*",
     "@nodellmcache/semantic-cache": "workspace:*",
+    "@nodellmcache/redis": "workspace:*",
     "@nodellmcache/observability": "workspace:*",
     "@anthropic-ai/sdk": "^0.30.0",
     "openai": "^4.0.0"

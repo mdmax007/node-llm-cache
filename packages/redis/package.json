@@ -1,0 +1,57 @@
+{
+  "name": "@nodellmcache/redis",
+  "version": "0.1.0",
+  "description": "Redis storage adapter for NodeLLMCache (ioredis) with namespacing, TTL, and compression",
+  "keywords": ["llm", "cache", "redis", "ioredis", "storage", "adapter", "nodejs"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdmax007/node-llm-cache.git",
+    "directory": "packages/redis"
+  },
+  "homepage": "https://github.com/mdmax007/node-llm-cache/tree/main/packages/redis#readme",
+  "bugs": "https://github.com/mdmax007/node-llm-cache/issues",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"no lint configured\""
+  },
+  "dependencies": {
+    "ioredis": "^5.4.0"
+  },
+  "peerDependencies": {
+    "@nodellmcache/core": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@nodellmcache/compression": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nodellmcache/core": "workspace:*",
+    "@nodellmcache/compression": "workspace:*",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
