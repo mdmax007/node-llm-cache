@@ -23,9 +23,11 @@
     "weaviate": "node --experimental-strip-types weaviate.ts",
     "pinecone": "node --experimental-strip-types pinecone.ts",
     "milvus": "node --experimental-strip-types milvus.ts",
-    "observability": "node --experimental-strip-types observability.ts"
+    "observability": "node --experimental-strip-types observability.ts",
+    "dashboard": "node --experimental-strip-types dashboard.ts"
   },
   "dependencies": {
+    "@nodellmcache/dashboard": "workspace:*",
     "@nodellmcache/core": "workspace:*",
     "@nodellmcache/memory": "workspace:*",
     "@nodellmcache/prompt-cache": "workspace:*",
