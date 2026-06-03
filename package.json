@@ -1,0 +1,36 @@
+{
+  "name": "node-llm-cache",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI Memory Infrastructure for LLM applications, agents, and RAG systems",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdmax007/node-llm-cache.git"
+  },
+  "homepage": "https://github.com/mdmax007/node-llm-cache#readme",
+  "bugs": "https://github.com/mdmax007/node-llm-cache/issues",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "build": "turbo build",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "lint": "turbo lint",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "@types/node": "^20.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0",
+    "tsup": "^8.0.0",
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0"
+  }
+}
