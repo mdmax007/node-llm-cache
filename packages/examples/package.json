@@ -1,0 +1,31 @@
+{
+  "name": "@nodellmcache/examples",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runnable examples for NodeLLMCache packages",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"no lint configured\"",
+    "prompt-cache:openai": "node --experimental-strip-types prompt-cache-openai.ts",
+    "prompt-cache:anthropic": "node --experimental-strip-types prompt-cache-anthropic.ts",
+    "embedding-cache:openai": "node --experimental-strip-types embedding-cache-openai.ts",
+    "semantic-cache:openai": "node --experimental-strip-types semantic-cache-openai.ts",
+    "observability": "node --experimental-strip-types observability.ts"
+  },
+  "dependencies": {
+    "@nodellmcache/core": "workspace:*",
+    "@nodellmcache/memory": "workspace:*",
+    "@nodellmcache/prompt-cache": "workspace:*",
+    "@nodellmcache/embedding-cache": "workspace:*",
+    "@nodellmcache/semantic-cache": "workspace:*",
+    "@nodellmcache/observability": "workspace:*",
+    "@anthropic-ai/sdk": "^0.30.0",
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.5.0"
+  }
+}
