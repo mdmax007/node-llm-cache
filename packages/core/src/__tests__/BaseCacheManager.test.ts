@@ -81,11 +81,22 @@ describe('BaseCacheManager', () => {
     expect(generator).toHaveBeenCalledTimes(2)
   })
 
-  it('bypasses the cache when cache:false', async () => {
+  it('bypasses the cache when cache:false without recording hits or misses', async () => {
     await cache.getOrGenerate('hello', generator, { cache: false })
     await cache.getOrGenerate('hello', generator, { cache: false })
     expect(generator).toHaveBeenCalledTimes(2)
     expect(adapter.store.size).toBe(0)
+    const stats = await cache.stats()
+    expect(stats.hits).toBe(0)
+    expect(stats.misses).toBe(0)
+  })
+
+  it('does not emit metrics on a bypass', async () => {
+    const events: MetricEvent[] = []
+    const sink: MetricsSink = { emit: (event) => events.push(event) }
+    const bypass = new TestCache<string>({ adapter, metrics: sink })
+    await bypass.getOrGenerate('hello', generator, { cache: false })
+    expect(events).toEqual([])
   })
 
   it('treats an expired entry as a miss', async () => {

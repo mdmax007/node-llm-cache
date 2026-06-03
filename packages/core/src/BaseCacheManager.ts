@@ -96,23 +96,26 @@ export abstract class BaseCacheManager<T> {
     generator: () => Promise<T>,
     options?: CacheOptions,
   ): Promise<T> {
-    const useCache = options?.cache !== false
+    // A deliberate bypass is neither a hit nor a miss — skip the cache and
+    // metrics entirely so accounting reflects only real cache consultations.
+    if (options?.cache === false) {
+      return generator()
+    }
+
     const key = this.buildKey(input, options)
     const start = Date.now()
 
-    if (useCache) {
-      const cached = await this.adapter.get(key)
-      if (cached && !TTLManager.isExpired(cached)) {
-        this.hits++
-        this.metrics.emit('cache.hit', {
-          cacheType: this.cacheType,
-          latencyMs: Date.now() - start,
-          tokensSaved: cached.metadata.tokenCount,
-          provider: options?.provider,
-          model: options?.model,
-        })
-        return cached.value
-      }
+    const cached = await this.adapter.get(key)
+    if (cached && !TTLManager.isExpired(cached)) {
+      this.hits++
+      this.metrics.emit('cache.hit', {
+        cacheType: this.cacheType,
+        latencyMs: Date.now() - start,
+        tokensSaved: cached.metadata.tokenCount,
+        provider: options?.provider,
+        model: options?.model,
+      })
+      return cached.value
     }
 
     this.misses++
@@ -125,17 +128,15 @@ export abstract class BaseCacheManager<T> {
 
     const value = await generator()
 
-    if (useCache) {
-      const ttl = options?.ttl ?? this.defaultTTL
-      const entry = this.buildEntry(key, value, options)
-      await this.adapter.set(key, entry, ttl)
-      this.metrics.emit('cache.set', {
-        cacheType: this.cacheType,
-        latencyMs: Date.now() - start,
-        provider: options?.provider,
-        model: options?.model,
-      })
-    }
+    const ttl = options?.ttl ?? this.defaultTTL
+    const entry = this.buildEntry(key, value, options)
+    await this.adapter.set(key, entry, ttl)
+    this.metrics.emit('cache.set', {
+      cacheType: this.cacheType,
+      latencyMs: Date.now() - start,
+      provider: options?.provider,
+      model: options?.model,
+    })
 
     return value
   }
