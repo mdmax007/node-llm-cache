@@ -13,6 +13,10 @@
     "embedding-cache:openai": "node --experimental-strip-types embedding-cache-openai.ts",
     "semantic-cache:openai": "node --experimental-strip-types semantic-cache-openai.ts",
     "redis-adapter": "node --experimental-strip-types redis-adapter.ts",
+    "retrieval-cache": "node --experimental-strip-types retrieval-cache.ts",
+    "context-cache": "node --experimental-strip-types context-cache.ts",
+    "agent-memory-single": "node --experimental-strip-types agent-memory-single.ts",
+    "agent-memory-multi-agent": "node --experimental-strip-types agent-memory-multi-agent.ts",
     "observability": "node --experimental-strip-types observability.ts"
   },
   "dependencies": {
@@ -21,6 +25,9 @@
     "@nodellmcache/prompt-cache": "workspace:*",
     "@nodellmcache/embedding-cache": "workspace:*",
     "@nodellmcache/semantic-cache": "workspace:*",
+    "@nodellmcache/retrieval-cache": "workspace:*",
+    "@nodellmcache/context-cache": "workspace:*",
+    "@nodellmcache/agent-memory": "workspace:*",
     "@nodellmcache/redis": "workspace:*",
     "@nodellmcache/observability": "workspace:*",
     "@anthropic-ai/sdk": "^0.30.0",
