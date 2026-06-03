@@ -32,9 +32,7 @@ const DEFAULT_ID_KEY = '__id'
  * accepts integer/UUID ids); the original id is preserved in the payload and
  * restored on query. The collection is created on demand (cosine by default).
  */
-export class QdrantAdapter<M extends Record<string, unknown> = Record<string, unknown>>
-  implements VectorStoreAdapter<M>
-{
+export class QdrantAdapter<M = Record<string, unknown>> implements VectorStoreAdapter<M> {
   private readonly client: QdrantClient
   private readonly collection: string
   private readonly distance: QdrantDistance
@@ -54,7 +52,10 @@ export class QdrantAdapter<M extends Record<string, unknown> = Record<string, un
 
   async upsert(id: string, vector: number[], metadata?: M): Promise<void> {
     await this.ensureCollection(vector.length)
-    const payload: Record<string, unknown> = { ...(metadata ?? {}), [this.idKey]: id }
+    const payload: Record<string, unknown> = {
+      ...((metadata ?? {}) as Record<string, unknown>),
+      [this.idKey]: id,
+    }
     await this.retry(() =>
       this.client.upsert(this.collection, {
         wait: true,
@@ -69,7 +70,7 @@ export class QdrantAdapter<M extends Record<string, unknown> = Record<string, un
       this.client.search(this.collection, {
         vector,
         limit: topK,
-        filter: toQdrantFilter(filter),
+        filter: toQdrantFilter(filter as Record<string, unknown> | undefined),
         with_payload: true,
       }),
     )

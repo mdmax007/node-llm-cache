@@ -1,0 +1,54 @@
+{
+  "name": "@nodellmcache/milvus",
+  "version": "0.1.0",
+  "description": "Milvus vector store adapter for NodeLLMCache",
+  "keywords": ["llm", "cache", "milvus", "vector", "embeddings", "nodejs"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdmax007/node-llm-cache.git",
+    "directory": "packages/milvus"
+  },
+  "homepage": "https://github.com/mdmax007/node-llm-cache/tree/main/packages/milvus#readme",
+  "bugs": "https://github.com/mdmax007/node-llm-cache/issues",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo \"no lint configured\""
+  },
+  "peerDependencies": {
+    "@nodellmcache/core": "workspace:^",
+    "@zilliz/milvus2-sdk-node": "^2.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@zilliz/milvus2-sdk-node": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nodellmcache/core": "workspace:*",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
