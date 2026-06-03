@@ -30,6 +30,76 @@ importers:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@20.19.41)
 
+  examples:
+    dependencies:
+      '@anthropic-ai/sdk':
+        specifier: ^0.30.0
+        version: 0.30.1(encoding@0.1.13)
+      '@nodellmcache/agent-memory':
+        specifier: workspace:*
+        version: link:../packages/agent-memory
+      '@nodellmcache/chroma':
+        specifier: workspace:*
+        version: link:../packages/chroma
+      '@nodellmcache/compression':
+        specifier: workspace:*
+        version: link:../packages/compression
+      '@nodellmcache/context-cache':
+        specifier: workspace:*
+        version: link:../packages/context-cache
+      '@nodellmcache/core':
+        specifier: workspace:*
+        version: link:../packages/core
+      '@nodellmcache/dashboard':
+        specifier: workspace:*
+        version: link:../packages/dashboard
+      '@nodellmcache/embedding-cache':
+        specifier: workspace:*
+        version: link:../packages/embedding-cache
+      '@nodellmcache/memory':
+        specifier: workspace:*
+        version: link:../packages/memory
+      '@nodellmcache/milvus':
+        specifier: workspace:*
+        version: link:../packages/milvus
+      '@nodellmcache/observability':
+        specifier: workspace:*
+        version: link:../packages/observability
+      '@nodellmcache/pgvector':
+        specifier: workspace:*
+        version: link:../packages/pgvector
+      '@nodellmcache/pinecone':
+        specifier: workspace:*
+        version: link:../packages/pinecone
+      '@nodellmcache/prompt-cache':
+        specifier: workspace:*
+        version: link:../packages/prompt-cache
+      '@nodellmcache/qdrant':
+        specifier: workspace:*
+        version: link:../packages/qdrant
+      '@nodellmcache/redis':
+        specifier: workspace:*
+        version: link:../packages/redis
+      '@nodellmcache/retrieval-cache':
+        specifier: workspace:*
+        version: link:../packages/retrieval-cache
+      '@nodellmcache/semantic-cache':
+        specifier: workspace:*
+        version: link:../packages/semantic-cache
+      '@nodellmcache/weaviate':
+        specifier: workspace:*
+        version: link:../packages/weaviate
+      openai:
+        specifier: ^4.0.0
+        version: 4.104.0(encoding@0.1.13)
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.41
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+
   packages/agent-memory:
     devDependencies:
       '@nodellmcache/core':
@@ -203,73 +273,6 @@ importers:
       vitest:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@20.19.41)
-
-  packages/examples:
-    dependencies:
-      '@anthropic-ai/sdk':
-        specifier: ^0.30.0
-        version: 0.30.1(encoding@0.1.13)
-      '@nodellmcache/agent-memory':
-        specifier: workspace:*
-        version: link:../agent-memory
-      '@nodellmcache/chroma':
-        specifier: workspace:*
-        version: link:../chroma
-      '@nodellmcache/context-cache':
-        specifier: workspace:*
-        version: link:../context-cache
-      '@nodellmcache/core':
-        specifier: workspace:*
-        version: link:../core
-      '@nodellmcache/dashboard':
-        specifier: workspace:*
-        version: link:../dashboard
-      '@nodellmcache/embedding-cache':
-        specifier: workspace:*
-        version: link:../embedding-cache
-      '@nodellmcache/memory':
-        specifier: workspace:*
-        version: link:../memory
-      '@nodellmcache/milvus':
-        specifier: workspace:*
-        version: link:../milvus
-      '@nodellmcache/observability':
-        specifier: workspace:*
-        version: link:../observability
-      '@nodellmcache/pgvector':
-        specifier: workspace:*
-        version: link:../pgvector
-      '@nodellmcache/pinecone':
-        specifier: workspace:*
-        version: link:../pinecone
-      '@nodellmcache/prompt-cache':
-        specifier: workspace:*
-        version: link:../prompt-cache
-      '@nodellmcache/qdrant':
-        specifier: workspace:*
-        version: link:../qdrant
-      '@nodellmcache/redis':
-        specifier: workspace:*
-        version: link:../redis
-      '@nodellmcache/retrieval-cache':
-        specifier: workspace:*
-        version: link:../retrieval-cache
-      '@nodellmcache/semantic-cache':
-        specifier: workspace:*
-        version: link:../semantic-cache
-      '@nodellmcache/weaviate':
-        specifier: workspace:*
-        version: link:../weaviate
-      openai:
-        specifier: ^4.0.0
-        version: 4.104.0(encoding@0.1.13)
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.41
-      typescript:
-        specifier: ^5.5.0
-        version: 5.9.3
 
   packages/memory:
     devDependencies:

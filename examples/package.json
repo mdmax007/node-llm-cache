@@ -8,6 +8,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "echo \"no lint configured\"",
+    "core": "node --experimental-strip-types core.ts",
+    "compression": "node --experimental-strip-types compression.ts",
+    "memory": "node --experimental-strip-types memory.ts",
     "prompt-cache:openai": "node --experimental-strip-types prompt-cache-openai.ts",
     "prompt-cache:anthropic": "node --experimental-strip-types prompt-cache-anthropic.ts",
     "embedding-cache:openai": "node --experimental-strip-types embedding-cache-openai.ts",
@@ -29,6 +32,7 @@
   "dependencies": {
     "@nodellmcache/dashboard": "workspace:*",
     "@nodellmcache/core": "workspace:*",
+    "@nodellmcache/compression": "workspace:*",
     "@nodellmcache/memory": "workspace:*",
     "@nodellmcache/prompt-cache": "workspace:*",
     "@nodellmcache/embedding-cache": "workspace:*",
