@@ -1,17 +1,28 @@
-# @nodellmcache/examples
+# NodeLLMCache examples
 
-Runnable examples for the NodeLLMCache packages. Private (not published); every file uses the public `@nodellmcache/*` package names so it mirrors real usage.
+Runnable examples, one per package. Private (not published); every file uses the public `@nodellmcache/*` package names so it mirrors real usage.
 
 ## Running
 
-From the repo root:
+From the repo root (build the packages first with `pnpm turbo build`):
 
 ```bash
 pnpm --filter @nodellmcache/examples <script>
 ```
 
+The examples that use mock data run with no credentials or services — start there:
+
 | Script | Needs |
 |--------|-------|
+| `core` | — (KeyBuilder, TTL, a custom adapter) |
+| `compression` | — (auto codec selection, round-trips) |
+| `memory` | — (LRU eviction, TTL, compression) |
+| `observability` | — (mock generator) |
+| `retrieval-cache` | — (mock retriever) |
+| `context-cache` | — (mock assembler) |
+| `agent-memory-single` | — |
+| `agent-memory-multi-agent` | — |
+| `dashboard` | — (opens http://127.0.0.1:4242) |
 | `prompt-cache:openai` | `OPENAI_API_KEY` |
 | `prompt-cache:anthropic` | `ANTHROPIC_API_KEY` |
 | `embedding-cache:openai` | `OPENAI_API_KEY` |
