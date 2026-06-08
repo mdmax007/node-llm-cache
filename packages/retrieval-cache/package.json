@@ -1,8 +1,16 @@
 {
   "name": "@nodellmcache/retrieval-cache",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "RAG retrieval & reranker result caching for NodeLLMCache",
-  "keywords": ["llm", "cache", "rag", "retrieval", "reranker", "vector", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "rag",
+    "retrieval",
+    "reranker",
+    "vector",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +30,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

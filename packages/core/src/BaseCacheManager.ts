@@ -44,6 +44,8 @@ export abstract class BaseCacheManager<T> {
 
   private hits = 0
   private misses = 0
+  /** Keys with an in-flight background revalidation, to avoid duplicate refreshes. */
+  private readonly refreshing = new Set<string>()
 
   constructor(options: BaseCacheManagerOptions<T>) {
     this.adapter = options.adapter
@@ -70,6 +72,7 @@ export abstract class BaseCacheManager<T> {
   protected buildEntry(key: string, value: T, options?: CacheOptions): CacheEntry<T> {
     const createdAt = Date.now()
     const ttl = options?.ttl ?? this.defaultTTL
+    const staleTtl = options?.staleTtl
     return {
       key,
       value,
@@ -82,6 +85,8 @@ export abstract class BaseCacheManager<T> {
         provider: options?.provider,
         model: options?.model,
         tokenCount: options?.tokenCount,
+        staleAt:
+          staleTtl !== undefined && staleTtl > 0 ? createdAt + staleTtl : undefined,
       },
     }
   }
@@ -127,17 +132,57 @@ export abstract class BaseCacheManager<T> {
     })
 
     const value = await generator()
+    await this.persist(key, value, options, start)
+    return value
+  }
 
-    const ttl = options?.ttl ?? this.defaultTTL
-    const entry = this.buildEntry(key, value, options)
-    await this.adapter.set(key, entry, ttl)
-    this.metrics.emit('cache.set', {
+  /**
+   * Stale-while-revalidate read-through. Like {@link getOrGenerate}, but when a
+   * cached entry is *stale* (past its `staleTtl`/`staleAt` but not yet expired)
+   * it is returned immediately and a fresh value is fetched in the background.
+   * Concurrent stale hits for the same key trigger at most one background
+   * refresh. A failed background refresh is swallowed and the stale value stands
+   * until it fully expires.
+   */
+  async getOrRevalidate(
+    input: string,
+    generator: () => Promise<T>,
+    options?: CacheOptions,
+  ): Promise<T> {
+    if (options?.cache === false) {
+      return generator()
+    }
+
+    const key = this.buildKey(input, options)
+    const start = Date.now()
+
+    const cached = await this.adapter.get(key)
+    if (cached && !TTLManager.isExpired(cached)) {
+      this.hits++
+      this.metrics.emit('cache.hit', {
+        cacheType: this.cacheType,
+        latencyMs: Date.now() - start,
+        tokensSaved: cached.metadata.tokenCount,
+        provider: options?.provider,
+        model: options?.model,
+      })
+      const staleAt = cached.metadata.staleAt
+      if (staleAt !== undefined && staleAt <= Date.now()) {
+        this.revalidate(key, generator, options)
+      }
+      return cached.value
+    }
+
+    this.misses++
+    this.metrics.emit('cache.miss', {
       cacheType: this.cacheType,
       latencyMs: Date.now() - start,
       provider: options?.provider,
       model: options?.model,
     })
 
+    const value = await generator()
+    await this.persist(key, value, options, start)
     return value
   }
 
@@ -160,5 +205,39 @@ export abstract class BaseCacheManager<T> {
       hitRate: total === 0 ? 0 : this.hits / total,
       entryCount: adapterStats.entryCount,
     }
+  }
+
+  /** Builds an entry, writes it through the adapter, and emits `cache.set`. */
+  private async persist(
+    key: string,
+    value: T,
+    options: CacheOptions | undefined,
+    start: number,
+  ): Promise<void> {
+    const ttl = options?.ttl ?? this.defaultTTL
+    const entry = this.buildEntry(key, value, options)
+    await this.adapter.set(key, entry, ttl)
+    this.metrics.emit('cache.set', {
+      cacheType: this.cacheType,
+      latencyMs: Date.now() - start,
+      provider: options?.provider,
+      model: options?.model,
+    })
+  }
+
+  /** Fire-and-forget background refresh for a stale entry, coalesced per key. */
+  private revalidate(key: string, generator: () => Promise<T>, options?: CacheOptions): void {
+    if (this.refreshing.has(key)) return
+    this.refreshing.add(key)
+    void (async () => {
+      try {
+        const value = await generator()
+        await this.persist(key, value, options, Date.now())
+      } catch {
+        // Swallow background-refresh failures: the stale value stands until expiry.
+      } finally {
+        this.refreshing.delete(key)
+      }
+    })()
   }
 }

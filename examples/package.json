@@ -1,6 +1,6 @@
 {
   "name": "@nodellmcache/examples",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Runnable examples for NodeLLMCache packages",
   "license": "MIT",
@@ -11,6 +11,9 @@
     "core": "node --experimental-strip-types core.ts",
     "compression": "node --experimental-strip-types compression.ts",
     "memory": "node --experimental-strip-types memory.ts",
+    "tiered": "node --experimental-strip-types tiered.ts",
+    "encryption": "node --experimental-strip-types encryption.ts",
+    "otel": "node --experimental-strip-types otel.ts",
     "prompt-cache:openai": "node --experimental-strip-types prompt-cache-openai.ts",
     "prompt-cache:anthropic": "node --experimental-strip-types prompt-cache-anthropic.ts",
     "embedding-cache:openai": "node --experimental-strip-types embedding-cache-openai.ts",
@@ -27,7 +30,8 @@
     "pinecone": "node --experimental-strip-types pinecone.ts",
     "milvus": "node --experimental-strip-types milvus.ts",
     "observability": "node --experimental-strip-types observability.ts",
-    "dashboard": "node --experimental-strip-types dashboard.ts"
+    "dashboard": "node --experimental-strip-types dashboard.ts",
+    "swr": "node --experimental-strip-types swr.ts"
   },
   "dependencies": {
     "@nodellmcache/dashboard": "workspace:*",
@@ -48,6 +52,9 @@
     "@nodellmcache/milvus": "workspace:*",
     "@nodellmcache/redis": "workspace:*",
     "@nodellmcache/observability": "workspace:*",
+    "@nodellmcache/tiered": "workspace:*",
+    "@nodellmcache/encryption": "workspace:*",
+    "@nodellmcache/otel": "workspace:*",
     "@anthropic-ai/sdk": "^0.30.0",
     "openai": "^4.0.0"
   },

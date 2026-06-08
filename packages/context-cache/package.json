@@ -1,8 +1,15 @@
 {
   "name": "@nodellmcache/context-cache",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Assembled LLM context-window caching for NodeLLMCache",
-  "keywords": ["llm", "cache", "context", "rag", "prompt", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "context",
+    "rag",
+    "prompt",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +29,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

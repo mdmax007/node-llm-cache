@@ -170,4 +170,92 @@ describe('BaseCacheManager', () => {
   it('noopMetrics.emit is a no-op', () => {
     expect(() => noopMetrics.emit('cache.hit', { cacheType: 'prompt', latencyMs: 0 })).not.toThrow()
   })
+
+  describe('getOrRevalidate (stale-while-revalidate)', () => {
+    it('records staleAt on the entry from staleTtl', () => {
+      const cache2 = new TestCache<string>({ adapter })
+      const e = cache2['buildEntry']('k', 'v', { ttl: 10_000, staleTtl: 1000 })
+      expect(e.metadata.staleAt).toBeGreaterThan(Date.now())
+      expect(e.metadata.staleAt!).toBeLessThan(e.expiresAt!)
+    })
+
+    it('serves a fresh entry without revalidating', async () => {
+      await cache.getOrRevalidate('hello', generator, { ttl: 10_000, staleTtl: 5000 })
+      const result = await cache.getOrRevalidate('hello', generator, { ttl: 10_000, staleTtl: 5000 })
+      expect(result).toBe('generated')
+      expect(generator).toHaveBeenCalledOnce() // fresh hit, no refresh
+    })
+
+    it('serves a stale value immediately and refreshes in the background', async () => {
+      vi.useFakeTimers()
+      let n = 0
+      const gen = vi.fn().mockImplementation(() => Promise.resolve(`v${++n}`))
+      const c = new TestCache<string>({ adapter: new FakeAdapter<string>() })
+
+      const first = await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      expect(first).toBe('v1')
+
+      vi.advanceTimersByTime(2000) // now stale (1s) but not expired (10s)
+      const stale = await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      expect(stale).toBe('v1') // served stale immediately
+      await vi.runAllTimersAsync() // let the background refresh resolve
+      expect(gen).toHaveBeenCalledTimes(2) // one initial + one background refresh
+
+      // Next read sees the refreshed value.
+      const fresh = await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      expect(fresh).toBe('v2')
+      vi.useRealTimers()
+    })
+
+    it('coalesces concurrent stale hits into a single background refresh', async () => {
+      vi.useFakeTimers()
+      const gen = vi.fn().mockResolvedValue('fresh')
+      const a = new FakeAdapter<string>()
+      const c = new TestCache<string>({ adapter: a })
+      await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      vi.advanceTimersByTime(2000)
+      // Two concurrent stale reads.
+      await Promise.all([
+        c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 }),
+        c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 }),
+      ])
+      await vi.runAllTimersAsync()
+      expect(gen).toHaveBeenCalledTimes(2) // initial + exactly one refresh (not two)
+      vi.useRealTimers()
+    })
+
+    it('treats an expired entry as a miss', async () => {
+      await cache.getOrRevalidate('hello', generator, { ttl: 1000, staleTtl: 500 })
+      const key = [...adapter.store.keys()][0]!
+      adapter.store.get(key)!.expiresAt = Date.now() - 1
+      await cache.getOrRevalidate('hello', generator, { ttl: 1000, staleTtl: 500 })
+      expect(generator).toHaveBeenCalledTimes(2)
+    })
+
+    it('keeps serving the stale value if the background refresh throws', async () => {
+      vi.useFakeTimers()
+      let call = 0
+      const gen = vi.fn().mockImplementation(() => {
+        call++
+        return call === 1 ? Promise.resolve('v1') : Promise.reject(new Error('refresh failed'))
+      })
+      const c = new TestCache<string>({ adapter: new FakeAdapter<string>() })
+      await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      vi.advanceTimersByTime(2000)
+      const stale = await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      expect(stale).toBe('v1')
+      await vi.runAllTimersAsync()
+      // Still serves the stale value (refresh failed silently).
+      const again = await c.getOrRevalidate('k', gen, { ttl: 10_000, staleTtl: 1000 })
+      expect(again).toBe('v1')
+      vi.useRealTimers()
+    })
+
+    it('bypasses the cache when cache:false', async () => {
+      await cache.getOrRevalidate('hello', generator, { cache: false })
+      const stats = await cache.stats()
+      expect(stats.hits).toBe(0)
+      expect(stats.misses).toBe(0)
+    })
+  })
 })

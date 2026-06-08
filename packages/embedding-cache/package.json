@@ -1,8 +1,16 @@
 {
   "name": "@nodellmcache/embedding-cache",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Vector embedding caching for NodeLLMCache with batch dedup and reuse tracking",
-  "keywords": ["llm", "cache", "embeddings", "vector", "openai", "rag", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "embeddings",
+    "vector",
+    "openai",
+    "rag",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +30,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

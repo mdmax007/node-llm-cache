@@ -13,6 +13,13 @@ export interface CacheMetadata {
   provider?: LLMProvider
   model?: string
   tokenCount?: number
+  /**
+   * Absolute epoch ms after which the entry is considered *stale* but still
+   * usable. Used by stale-while-revalidate: a stale hit is served immediately
+   * while a fresh value is fetched in the background. Always earlier than
+   * `expiresAt`.
+   */
+  staleAt?: number
 }
 
 /**
@@ -138,6 +145,11 @@ export interface CacheOptions {
   model?: string
   /** Relative TTL in milliseconds; overrides the manager default. */
   ttl?: number
+  /**
+   * Relative ms after which an entry is *stale* but still servable via
+   * `getOrRevalidate` (stale-while-revalidate). Should be less than `ttl`.
+   */
+  staleTtl?: number
   /** When false, bypasses the cache entirely (read and write). */
   cache?: boolean
   tokenCount?: number

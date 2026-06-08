@@ -1,8 +1,16 @@
 {
   "name": "@nodellmcache/qdrant",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Qdrant vector store adapter for NodeLLMCache",
-  "keywords": ["llm", "cache", "qdrant", "vector", "embeddings", "semantic", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "qdrant",
+    "vector",
+    "embeddings",
+    "semantic",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +30,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

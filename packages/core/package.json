@@ -1,8 +1,15 @@
 {
   "name": "@nodellmcache/core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Shared interfaces, types, and utilities for NodeLLMCache — AI memory infrastructure for Node.js",
-  "keywords": ["llm", "cache", "ai", "memory", "nodejs", "embeddings"],
+  "keywords": [
+    "llm",
+    "cache",
+    "ai",
+    "memory",
+    "nodejs",
+    "embeddings"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +29,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

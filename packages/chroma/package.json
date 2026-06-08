@@ -1,8 +1,16 @@
 {
   "name": "@nodellmcache/chroma",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Chroma vector store adapter for NodeLLMCache",
-  "keywords": ["llm", "cache", "chroma", "chromadb", "vector", "embeddings", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "chroma",
+    "chromadb",
+    "vector",
+    "embeddings",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +30,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

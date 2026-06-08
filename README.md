@@ -148,6 +148,11 @@ Pick only what you need. Everything is published under the `@nodellmcache` scope
 | `dashboard` | The opt in real time metrics UI |
 | `redis` | Redis storage adapter |
 | `qdrant`, `pgvector`, `chroma`, `weaviate`, `pinecone`, `milvus` | Vector store adapters |
+| `tiered` | Compose adapters into L1 plus L2 with read through and write through |
+| `encryption` | AES-256-GCM wrapper that encrypts cached values at rest |
+| `otel` | OpenTelemetry exporter for the metrics |
+
+Stale-while-revalidate is built into every cache (`getOrRevalidate`), so you can serve a slightly stale answer instantly while a fresh one is fetched in the background.
 
 ## How it is built
 

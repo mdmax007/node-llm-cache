@@ -1,8 +1,15 @@
 {
   "name": "@nodellmcache/observability",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Metrics, cost estimation, and reporting for NodeLLMCache",
-  "keywords": ["llm", "cache", "metrics", "observability", "cost", "nodejs"],
+  "keywords": [
+    "llm",
+    "cache",
+    "metrics",
+    "observability",
+    "cost",
+    "nodejs"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,7 +29,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
